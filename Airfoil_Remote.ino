@@ -9,8 +9,8 @@
 
 //Actions
 #define DO_VOLUME_UP 1
-#define DO_VOLUME_DOWN   2
-#define DO_PLAY_PAUSE     4
+#define DO_VOLUME_DOWN 2
+#define DO_PLAY_PAUSE 4
 
 uint8_t readSwitches(void) {
   return (~(digitalRead(VOLUME_UP_SWITCH)*DO_VOLUME_UP
@@ -21,7 +21,7 @@ uint8_t readSwitches(void) {
 
 //Translate character to keyboard keycode and transmit
 void pressKeyCode (uint8_t c) {
-  ble.print(F("AT+BLEKEYBOARDCODE=03-00-"));
+  ble.print(F("AT+BLEKEYBOARDCODE=03-00-")); //sends additional left ctrl key 
   uint8_t Code=c;
   ble.print(Code,HEX);
   ble.println(F("-00-00-00-00"));
@@ -30,7 +30,7 @@ void pressKeyCode (uint8_t c) {
   while (readSwitches()) { //wait for button to be released
     /*do nothing*/
   };
-  ble.println(F("AT+BLEKEYBOARDCODE=00-00"));
+  ble.println(F("AT+BLEKEYBOARDCODE=00-00")); //release message
   MESSAGE(F("Released"));
 }
 
@@ -48,8 +48,8 @@ void setup() {
 void loop() {
   uint8_t i=readSwitches();
   switch (i) {
-    case DO_VOLUME_UP:   pressKeyCode(0x80); break;
-    case DO_VOLUME_DOWN: pressKeyCode(0x81); break;
-    case DO_PLAY_PAUSE:  pressKeyCode(0x13); break;
+    case DO_VOLUME_UP:   pressKeyCode(0x80); break; //Volume up
+    case DO_VOLUME_DOWN: pressKeyCode(0x81); break; //Volum down
+    case DO_PLAY_PAUSE:  pressKeyCode(0x13); break; //Play/Pause
   }
 }
